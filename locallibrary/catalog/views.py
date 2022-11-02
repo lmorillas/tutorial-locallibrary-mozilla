@@ -9,9 +9,11 @@ def index(request):
     # texto = 'Página inicial de la librería local'
     lista = '<h2>Mi lista de últimos libros</h2><ul>'
     # Consulta a la base de datos: últimos 5 libros
-    for libro in Book.objects.all()[:5]:
+    # for libro in Book.objects.all()[:5]:
+    # 5 últimos
+    for libro in Book.objects.all().order_by('-id')[:5]:
         lista += f'<li>{libro.title}</li>'
-    lista += '</ul>'
+    lista += '</ul>'  # fuera del for
 
     return HttpResponse(texto + lista)
 

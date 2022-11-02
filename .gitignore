@@ -3,4 +3,3 @@ env
 *pyo
 __pycache__
 
-*.sqlite3

@@ -2,5 +2,9 @@ env
 *pyc
 *pyo
 __pycache__
+<<<<<<< HEAD
 utils
 *.sqlite3
+=======
+
+>>>>>>> 597bc4d6fade9eea58605705f94490209ebe8c5f

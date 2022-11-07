@@ -6,7 +6,7 @@ from catalog.models import Book, BookInstance, Author
 # Create your views here.
 def index_general(request):
     
-    return render(request, 'index2.html')
+    return render(request, 'index-general.html')
 
 def acerca_de(request):
     texto = '''<h1>Acerca de</h1>

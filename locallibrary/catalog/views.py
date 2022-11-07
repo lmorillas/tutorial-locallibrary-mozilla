@@ -5,18 +5,8 @@ from catalog.models import Book, BookInstance, Author
 
 # Create your views here.
 def index_general(request):
-    texto = '''<h1>Librería Local</h1>
-    <p>Esta es la página principal de la librería local.</p>'''
-    # texto = 'Página inicial de la librería local'
-    lista = '<h2>Mi from django.shortcuts import renderlista de últimos libros</h2><ul>'
-    # Consulta a la base de datos: últimos 5 libros
-    # for libro in Book.objects.all()[:5]:
-    # 5 últimos
-    for libro in Book.objects.all().order_by('-id')[:5]:
-        lista += f'<li>{libro.title}</li>'
-    lista += '</ul>'  # fuera del for
-
-    return HttpResponse(texto + lista)
+    
+    return render(request, 'index2.html')
 
 def acerca_de(request):
     texto = '''<h1>Acerca de</h1>

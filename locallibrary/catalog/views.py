@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from catalog.models import Book, BookInstance, Author
+from django.views.generic import ListView, DetailView
 
 
 # Create your views here.
@@ -44,6 +45,22 @@ def index(request):
             'num_instances_available':num_instances_available,
             'num_authors':num_authors,
             'num_visits':num_visits,
-            'ultimos':ultimos},
+            'ulticlass="list-group"mos':ultimos},
     )
 
+
+## Listas Genéricas
+class BookListView(ListView):
+    '''Vista genérica para el listado de libros'''
+    model = Book
+    paginate_by = 15
+
+class BookDetailView(DetailView):
+    '''Vista genérica para el detalle de un libro'''
+    model = Book
+
+
+
+
+
+    

@@ -25,6 +25,9 @@ urlpatterns = [
     path('catalogo/', include('catalog.urls')), 
     ## para el index general
     path('', index_general, name='index_general'),
+
+    # urls de django-debug-toolbar
+    path('__debug__/', include('debug_toolbar.urls')),
 ]
 
 

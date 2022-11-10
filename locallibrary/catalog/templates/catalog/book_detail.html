@@ -12,7 +12,7 @@
 Ejemplares: {{ book.bookinstance_set.all.count }}
 
 {% for b in book.bookinstance_set.all %}
-{{b.status}} &nbsp;
+    {{b.status}} &nbsp;
 {% endfor %}
 
 {% endblock %}

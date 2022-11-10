@@ -2,14 +2,20 @@
 
 {% block title %}Listado de libros{% endblock %}
 
+
 {% block content %}
     <h1>Listado de libros</h1>
+<h2>{{ ahora }}</h2>
+{% if anterior %}
+<a href="{{ anterior }}">Volver</a>
+{% endif %}
 
     <ul class="list-group">
     {% for libro in book_list %}
 
 <li class="list-group-item"><a href="{% url 'detalle-libro' libro.id  %}">{{ libro }}</a></li>
-
+{% empty %}
+<li> No hemos encontrado ningún libro con la búsqueda <strong>{{busqueda}}</strong></li>
     {% endfor %}
 </ul>
 

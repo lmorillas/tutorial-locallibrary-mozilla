@@ -1,0 +1,3 @@
+[submodule "locallibrary/bibliotecas"]
+	path = locallibrary/bibliotecas
+	url = git@github.com:lmorillas/bibliotecas.git

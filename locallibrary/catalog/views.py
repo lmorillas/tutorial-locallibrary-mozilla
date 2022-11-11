@@ -1,22 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from catalog.models import Book, BookInstance, Author
+from django.views.generic import ListView, DetailView
+from datetime import datetime
 
 
 # Create your views here.
-def index_old(request):
-    texto = '''<h1>Librería Local</h1>
-    <p>Esta es la página principal de la librería local.</p>'''
-    # texto = 'Página inicial de la librería local'
-    lista = '<h2>Mi from django.shortcuts import renderlista de últimos libros</h2><ul>'
-    # Consulta a la base de datos: últimos 5 libros
-    # for libro in Book.objects.all()[:5]:
-    # 5 últimos
-    for libro in Book.objects.all().order_by('-id')[:5]:
-        lista += f'<li>{libro.title}</li>'
-    lista += '</ul>'  # fuera del for
-
-    return HttpResponse(texto + lista)
+def index_general(request):
+    
+    return render(request, 'index-general.html')
 
 def acerca_de(request):
     texto = '''<h1>Acerca de</h1>
@@ -56,3 +48,45 @@ def index(request):
             'num_visits':num_visits,
             'ultimos':ultimos},
     )
+
+
+## Listas Genéricas
+class BookListView(ListView):
+    '''Vista genérica para el listado de libros'''
+    model = Book
+    paginate_by = 15
+    def get_queryset(self):
+        return Book.objects.all().order_by('title')
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(BookListView, self).get_context_data(**kwargs)
+        # Create any data and add it to the context
+        context['ahora'] = datetime.now()
+        return context
+
+
+class BookDetailView(DetailView):
+    '''Vista genérica para el detalle de un libro'''
+    model = Book
+
+## Búsqueda
+class SearchResultsListView(ListView):
+    model = Book
+    
+    def get_queryset(self): # new
+        query = self.request.GET.get('q')
+        # voy a guardar query para el contexto
+        self.query = query
+        return Book.objects.filter(title__icontains=query)
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(SearchResultsListView, self).get_context_data(**kwargs)
+        # Create any data and add it to the context
+        context['busqueda'] = self.query
+        context['anterior'] = self.request.META.get('HTTP_REFERER')
+        return context
+
+
+    

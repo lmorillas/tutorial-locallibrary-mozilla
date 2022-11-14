@@ -1,8 +1,11 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect
 from catalog.models import Book, BookInstance, Author
 from django.views.generic import ListView, DetailView
-from datetime import datetime
+import datetime
+from catalog.forms import RenewBookForm
+from django.urls import reverse
+
 
 
 # Create your views here.
@@ -62,7 +65,7 @@ class BookListView(ListView):
         # Call the base implementation first to get a context
         context = super(BookListView, self).get_context_data(**kwargs)
         # Create any data and add it to the context
-        context['ahora'] = datetime.now()
+        context['ahora'] = datetime.datetime.now()
         return context
 
 
@@ -75,11 +78,14 @@ class SearchResultsListView(ListView):
     model = Book
     
     def get_queryset(self): # new
-        query = self.request.GET.get('q')
+        query = self.request.GET.get('q', '')
         # voy a guardar query para el contexto
-        self.query = query
-        return Book.objects.filter(title__icontains=query)
-    
+        if query:
+            self.query = query
+            return Book.objects.filter(title__icontains=query)
+        else:
+            return []
+        
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(SearchResultsListView, self).get_context_data(**kwargs)
@@ -87,6 +93,55 @@ class SearchResultsListView(ListView):
         context['busqueda'] = self.query
         context['anterior'] = self.request.META.get('HTTP_REFERER')
         return context
+
+class LibrosPrestados(ListView):
+    '''Vista genérica para el listado de libros que han sido prestados'''
+    model = BookInstance
+    template_name = 'catalog/libros_prestados.html'
+    paginate_by = 15
+    def get_queryset(self):
+        return BookInstance.objects.filter(status__exact='o').order_by('-due_back')
+
+
+# Vista para renovar un libro
+def renovar_libro(request, pk):
+    book_instance = get_object_or_404(BookInstance, pk=pk)
+
+    # If this is a POST request then process the Form data
+    if request.method == 'POST':
+
+        # Create a form instance and populate it with data from the request (binding):
+        form = RenewBookForm(request.POST)
+
+        # Check if the form is valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+            book_instance.due_back = form.cleaned_data['renewal_date']
+            book_instance.save()
+
+            # redirect to a new URL:
+            return HttpResponseRedirect(reverse('prestados') )
+
+    # If this is a GET (or any other method) create the default form.
+    else:
+
+        # inicializa la fecha de renovación dentro de 3 semanas
+        proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
+        form = RenewBookForm(initial={'renewal_date': proposed_renewal_date})
+
+    context = {
+        'form': form,
+        'book_instance': book_instance,
+    }
+
+    return render(request, 'catalog/renovacion_fecha.html', context)
+
+
+
+
+
+
+
 
 
     

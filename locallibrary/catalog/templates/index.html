@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block title %}Inicio Biblioteca{% endblock %}
 
 {% block content %}
-    <h1>Mi local library</h1>
+    <h1>{% trans "My Local Library" %}</h1>
     <hr>
     <p>Has visitado la página {{ num_visits }}</p>
 

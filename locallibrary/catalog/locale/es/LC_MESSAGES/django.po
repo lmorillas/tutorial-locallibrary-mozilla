@@ -1,0 +1,54 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-14 17:56+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: templates/includes/nav.html:12
+msgid "Home"
+msgstr "Inicio"
+
+#: templates/includes/nav.html:17
+msgid "Catalog"
+msgstr "Catálogo"
+
+#: templates/includes/nav.html:20
+msgid "Available Books"
+msgstr "Libros Disponibles"
+
+#: templates/includes/nav.html:23
+msgid "Authors"
+msgstr "Autores"
+
+#: templates/includes/nav.html:26
+msgid "About"
+msgstr "Acerca de"
+
+#: templates/includes/nav.html:32 templates/includes/nav.html:34
+msgid "Search"
+msgstr "Buscar"
+
+#: templates/index-general.html:12
+msgid "Library specializing in action books ..."
+msgstr "Biblioteca especializada en libros de acción ..."
+
+#: templates/index.html:7
+msgid "My Local Library"
+msgstr "Mi Biblioteca Local"
+
+#~ msgid "Books"
+#~ msgstr "Libros"

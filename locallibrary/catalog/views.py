@@ -3,10 +3,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from catalog.models import Book, BookInstance, Author
 from django.views.generic import ListView, DetailView
 import datetime
-from catalog.forms import RenewBookForm
+from catalog.forms import RenewBookForm, RenewBookModelForm
 from django.urls import reverse
-
-
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 
 # Create your views here.
 def index_general(request):
@@ -111,12 +111,13 @@ def renovar_libro(request, pk):
     if request.method == 'POST':
 
         # Create a form instance and populate it with data from the request (binding):
-        form = RenewBookForm(request.POST)
+        form = RenewBookModelForm(request.POST)
 
         # Check if the form is valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
-            book_instance.due_back = form.cleaned_data['renewal_date']
+            book_instance.due_back = form.cleaned_data['due_back']
+            book_instance.status = form.cleaned_data['status']
             book_instance.save()
 
             # redirect to a new URL:
@@ -127,7 +128,7 @@ def renovar_libro(request, pk):
 
         # inicializa la fecha de renovación dentro de 3 semanas
         proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
-        form = RenewBookForm(initial={'renewal_date': proposed_renewal_date})
+        form = RenewBookModelForm(initial={'due_back': proposed_renewal_date})
 
     context = {
         'form': form,
@@ -137,10 +138,31 @@ def renovar_libro(request, pk):
     return render(request, 'catalog/renovacion_fecha.html', context)
 
 
+## Gestión de autores con vistas genéricas
+
+class AuthorCreate(CreateView):
+    model = Author
+    fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
+    # Si funciona bien: success_url
+    success_url = reverse_lazy('autores')
+    #initial = {'date_of_death': '11/06/2020'}
+
+class AuthorUpdate(UpdateView):
+    model = Author
+    fields = '__all__' # Not recommended (potential security issue if more fields added)
+    success_url = reverse_lazy('autores')
+    
+
+class AuthorDelete(DeleteView):
+    model = Author
+    success_url = reverse_lazy('autores')
 
 
-
-
+class AuthorListView(ListView):
+    model = Author
+    paginate_by = 15
+    def get_queryset(self):
+        return Author.objects.all().order_by('last_name')
 
 
 

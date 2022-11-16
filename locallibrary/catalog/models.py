@@ -45,7 +45,8 @@ class Author(models.Model):
     date_of_death = models.DateField('Died', null=True, blank=True)
 
     class Meta:
-        ordering = ['last_name', 'first_name']
+        # ordering = ['last_name', 'first_name']
+        ordering = ['-id']
 
     def __str__(self):
         """String for representing the Model object."""
@@ -69,6 +70,7 @@ class BookInstance(models.Model):
         on_delete=models.SET_NULL, null=True)
     imprint = models.CharField(max_length=200, blank=True)
     due_back = models.DateField(null=True, blank=True)
+
 
     LOAN_STATUS = (
         ('m', 'Maintenance'),

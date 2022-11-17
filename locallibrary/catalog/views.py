@@ -14,12 +14,12 @@ def index_general(request):
     return render(request, 'index-general.html')
 
 def acerca_de(request):
-    texto = '''<h1>Acerca de</h1>
-    <p>Esta es la página de acerca de de la librería local.</p>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/EZ5sIrfmSwc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    
-    '''
-    return HttpResponse(texto)
+    context = {}
+    context['title'] = 'Acerca de'
+    context['coords'] = "41.6447242,-0.9231553"
+
+    return render(request, 'catalog/acerca_de.html', context)
+
 
 def index(request):
     """View function for home page of site."""

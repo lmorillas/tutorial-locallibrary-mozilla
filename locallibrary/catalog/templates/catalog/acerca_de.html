@@ -17,8 +17,14 @@
 
 {% block content %}
 <h1 class="mt-y">{{ title }}</h1>
-
- <div id="map"></div>
+<div class="row">
+    <div class="col-md-6">
+        <div id="map"></div>
+    </div>
+    <div class="col-md-6">
+        <p>Some text</p>
+    </div>
+</div>
 {% endblock %}
 
 {% block extrajs %}

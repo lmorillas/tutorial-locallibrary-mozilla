@@ -7,4 +7,4 @@ utils
 node_modules
 tmp
 *.mo
-
+.vscode

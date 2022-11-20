@@ -7,6 +7,9 @@ from catalog.forms import RenewBookForm, RenewBookModelForm
 from django.urls import reverse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from catalog.forms import ContactForm
+from django.core.mail import send_mail, BadHeaderError
+from django.contrib import messages
 
 # Create your views here.
 def index_general(request):
@@ -14,9 +17,25 @@ def index_general(request):
     return render(request, 'index-general.html')
 
 def acerca_de(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            from_email = form.cleaned_data['from_email']
+            message = form.cleaned_data['message']
+            try:
+                send_mail(subject, message, from_email, ['admin@example.com'])
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+            messages.success(request, 'Message sent successfully!')
+            return HttpResponseRedirect(reverse('index'))    
+        messages.error(request, "Error. Message not sent.")
+
     context = {}
     context['title'] = 'Acerca de'
     context['coords'] = '41.656771,-0.8960287' # "41.6447242,-0.9231553"
+    context['form'] = ContactForm()
+
 
     return render(request, 'catalog/acerca_de.html', context)
 

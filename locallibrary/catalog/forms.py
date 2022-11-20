@@ -46,3 +46,13 @@ class RenewBookModelForm(forms.ModelForm):
         fields = ['due_back', 'status']
         labels = {'due_back': _('Renewal date')}
         help_texts = {'due_back': _('Enter a date between now and 4 weeks (default 3).')}
+
+
+class ContactForm(forms.Form):
+    ''' Contact form '''
+    from_email = forms.EmailField(required=True)
+    subject = forms.CharField(required=True)
+    message = forms.CharField(widget=forms.Textarea, required=True)
+    from_email.widget.attrs.update({'class': 'form-control'})
+    subject.widget.attrs.update({'class': 'form-control'})
+    message.widget.attrs.update({'class': 'form-control'})

@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+#from django.contrib.auth import views as auth_views
+
 
 # importamos la vista de nuestra app catalog
 from catalog.views import index_general
@@ -22,16 +24,12 @@ from catalog.views import index_general
 urlpatterns = [
     path('admin/', admin.site.urls),
     # castellanizar url catálogo
-    path('catalogo/', include('catalog.urls')), 
-    ## para el index general
+    path('catalogo/', include('catalog.urls')),
+    path('accounts/', include('django.contrib.auth.urls')), 
+
+    # para el index general
     path('', index_general, name='index_general'),
 
     # urls de django-debug-toolbar
     path('__debug__/', include('debug_toolbar.urls')),
 ]
-
-
-
-
-
-

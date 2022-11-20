@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "debug_toolbar.middleware.DebugToolbarMiddleware", # debug-toolbar
+    "debug_toolbar.middleware.DebugToolbarMiddleware",  # debug-toolbar
 ]
 
 ROOT_URLCONF = 'locallibrary.urls'
@@ -139,6 +139,7 @@ INTERNAL_IPS = [
 # Para envío de emails
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Producción: AWS SES, Mailgun, SendGrid, etc.
 
 # Para messages. Configuración de mensajes para bs 5
 
@@ -149,3 +150,6 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
+
+LOGIN_URL = '/accounts/login/'
+LOGOUT_REDIRECT_URL = 'index_general'

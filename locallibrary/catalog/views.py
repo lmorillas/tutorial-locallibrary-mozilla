@@ -10,11 +10,16 @@ from django.urls import reverse_lazy
 from catalog.forms import ContactForm
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+
+
 def index_general(request):
-    
+
     return render(request, 'index-general.html')
+
 
 def acerca_de(request):
     if request.method == 'POST':
@@ -28,14 +33,13 @@ def acerca_de(request):
             except BadHeaderError:
                 return HttpResponse('Invalid header found.')
             messages.success(request, 'Message sent successfully!')
-            return HttpResponseRedirect(reverse('index'))    
+            return HttpResponseRedirect(reverse('index'))
         messages.error(request, "Error. Message not sent.")
 
     context = {}
     context['title'] = 'Acerca de'
-    context['coords'] = '41.656771,-0.8960287' # "41.6447242,-0.9231553"
+    context['coords'] = '41.656771,-0.8960287'  # "41.6447242,-0.9231553"
     context['form'] = ContactForm()
-
 
     return render(request, 'catalog/acerca_de.html', context)
 
@@ -63,23 +67,24 @@ def index(request):
         request,
         'index.html',
         context={
-            'num_books':num_books,
-            'num_instances':num_instances,
-            'num_instances_available':num_instances_available,
-            'num_authors':num_authors,
-            'num_visits':num_visits,
-            'ultimos':ultimos},
+            'num_books': num_books,
+            'num_instances': num_instances,
+            'num_instances_available': num_instances_available,
+            'num_authors': num_authors,
+            'num_visits': num_visits,
+            'ultimos': ultimos},
     )
 
 
-## Listas Genéricas
+# Listas Genéricas
 class BookListView(ListView):
     '''Vista genérica para el listado de libros'''
     model = Book
     paginate_by = 15
+
     def get_queryset(self):
         return Book.objects.all().order_by('title')
-    
+
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(BookListView, self).get_context_data(**kwargs)
@@ -92,22 +97,24 @@ class BookDetailView(DetailView):
     '''Vista genérica para el detalle de un libro'''
     model = Book
 
-## Búsqueda
+# Búsqueda
+
+
 class SearchResultsListView(ListView):
     model = Book
-    
-    def get_queryset(self): # new
+
+    def get_queryset(self):  # new
         query = self.request.GET.get('q', '')
         # voy a guardar query para el contexto
         if query:
             self.query = query
             resultado = Book.objects.filter(title__icontains=query)
             # ampliar búsqueda y concatenar resultados
-            return resultado    
+            return resultado
 
         else:
             return []
-        
+
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(SearchResultsListView, self).get_context_data(**kwargs)
@@ -116,11 +123,13 @@ class SearchResultsListView(ListView):
         context['anterior'] = self.request.META.get('HTTP_REFERER')
         return context
 
+
 class LibrosPrestados(ListView):
     '''Vista genérica para el listado de libros que han sido prestados'''
     model = BookInstance
     template_name = 'catalog/libros_prestados.html'
     paginate_by = 15
+
     def get_queryset(self):
         return BookInstance.objects.filter(status__exact='o').order_by('-due_back')
 
@@ -143,7 +152,7 @@ def renovar_libro(request, pk):
             book_instance.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect(reverse('prestados') )
+            return HttpResponseRedirect(reverse('prestados'))
 
     # If this is a GET (or any other method) create the default form.
     else:
@@ -160,7 +169,7 @@ def renovar_libro(request, pk):
     return render(request, 'catalog/renovacion_fecha.html', context)
 
 
-## Gestión de autores con vistas genéricas
+# Gestión de autores con vistas genéricas
 
 class AuthorCreate(CreateView):
     model = Author
@@ -169,11 +178,13 @@ class AuthorCreate(CreateView):
     success_url = reverse_lazy('autores')
     #initial = {'date_of_death': '11/06/2020'}
 
+
 class AuthorUpdate(UpdateView):
     model = Author
-    fields = '__all__' # Not recommended (potential security issue if more fields added)
+    # Not recommended (potential security issue if more fields added)
+    fields = '__all__'
     success_url = reverse_lazy('autores')
-    
+
 
 class AuthorDelete(DeleteView):
     model = Author
@@ -183,9 +194,6 @@ class AuthorDelete(DeleteView):
 class AuthorListView(ListView):
     model = Author
     paginate_by = 15
+
     def get_queryset(self):
         return Author.objects.all().order_by('last_name')
-
-
-
-    

@@ -15,8 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-#from django.contrib.auth import views as auth_views
-
+from django.conf.urls.static import static
+from django.conf import settings
 
 # importamos la vista de nuestra app catalog
 from catalog.views import index_general
@@ -32,4 +32,6 @@ urlpatterns = [
 
     # urls de django-debug-toolbar
     path('__debug__/', include('debug_toolbar.urls')),
-]
+    
+] +static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

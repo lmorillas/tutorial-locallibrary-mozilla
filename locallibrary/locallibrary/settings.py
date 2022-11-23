@@ -52,6 +52,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware", # debug-toolbar
+    'django.middleware.locale.LocaleMiddleware',
+
+
 ]
 
 ROOT_URLCONF = 'locallibrary.urls'
@@ -108,6 +111,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
+LANGUAGES = [
+    ('en', 'English'),
+    ('es', 'Spanish'),
+]
+
 LANGUAGE_CODE = 'es-es'
 
 TIME_ZONE = 'Europe/Madrid'
@@ -132,4 +140,8 @@ INTERNAL_IPS = [
     # ...
     "127.0.0.1",
     # ...
+]
+
+LOCALE_PATHS = [
+	Path(BASE_DIR, 'locale'),
 ]

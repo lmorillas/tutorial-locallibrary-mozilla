@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 class RenewBookForm(forms.Form):
-    renewal_date = forms.DateField(help_text="Introduce una fecha entre hoy y 4 semanas(default 3).")
+    renewal_date = forms.DateField(help_text=_("Enter a date between now and 4 weeks (default 3)."))
 
     def clean_renewal_date(self):
         '''Valida que la fecha no sea en el pasado y no más de 4 semanas en el futuro'''

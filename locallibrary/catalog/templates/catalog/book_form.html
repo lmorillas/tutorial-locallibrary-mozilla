@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n  django_bootstrap5 %}
+
+{% block extracss %}
+{{ form.media.css }}
+{% endblock %}
+
+{% block content %}
+<h1>{% trans "Book" %}</h1>
+
+  <form action="" method="post">
+    {% csrf_token %} <!-- #  Atención!! Protección CSRF-->
+    <table>
+    {% bootstrap_form form %}
+  
+    </table>
+    <input type="submit" class="form-control" value="Submit" />
+  </form>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  {{ form.media.js }}
+{% endblock %}

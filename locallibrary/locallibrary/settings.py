@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'debug_toolbar',
+    'django_bootstrap5',
+    'django_select2',
 ]
 
 MIDDLEWARE = [
@@ -148,3 +150,6 @@ INTERNAL_IPS = [
 LOCALE_PATHS = [
 	Path(BASE_DIR, 'locale'),
 ]
+
+# Tell select2 which cache configuration to use:
+#SELECT2_CACHE_BACKEND = "select2"

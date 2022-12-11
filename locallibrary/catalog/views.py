@@ -7,7 +7,7 @@ from catalog.forms import RenewBookForm, RenewBookModelForm
 from django.urls import reverse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from catalog.forms import ContactForm
+from catalog.forms import ContactForm, BookForm
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -197,3 +197,12 @@ class AuthorListView(ListView):
 
     def get_queryset(self):
         return Author.objects.all().order_by('last_name')
+
+
+class BookUpdateView(UpdateView):
+    model = Book
+    form_class = BookForm
+    # Not recommended (potential security issue if more fields added)
+    
+    success_url = reverse_lazy('detalle-libro')
+

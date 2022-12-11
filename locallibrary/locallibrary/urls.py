@@ -24,6 +24,7 @@ from catalog.views import index_general
 urlpatterns = [
     path('admin/', admin.site.urls),
     # castellanizar url catálogo
+    path("select2/", include("django_select2.urls")),
     path('catalogo/', include('catalog.urls')),
     path('accounts/', include('django.contrib.auth.urls')), 
 

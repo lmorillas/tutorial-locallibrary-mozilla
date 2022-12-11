@@ -3,7 +3,7 @@
 {% block title %}Detalle de libro{% endblock %}
 
 {% block content %}
-    <h1>{{ book.title }}</h1>
+    <h1>{{ book.title }}  <a href="{% url 'editar-libro' book.id %}"><i class="bi bi-pencil"></i></a></h1> 
 <p>Título: {{ book.title }}</p>
 <p>Autor: {{ book.author }}</p>
 <p>Resumen: {{ book.summary }}</p>
